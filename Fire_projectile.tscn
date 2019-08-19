@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Fire_projectile.gd" type="Script" id=1]
+[ext_resource path="res://assets/weapons/fireball/frame0001.png" type="Texture" id=2]
+[ext_resource path="res://assets/weapons/fireball/frame0002.png" type="Texture" id=3]
+[ext_resource path="res://assets/weapons/fireball/frame0003.png" type="Texture" id=4]
+[ext_resource path="res://assets/weapons/fireball/frame0000.png" type="Texture" id=5]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="Gradient" id=2]
+colors = PoolColorArray( 1, 0.967102, 0.617188, 1, 0.755859, 0, 0, 1 )
+
+[node name="Fire_projectile" type="Node2D"]
+script = ExtResource( 1 )
+speed = 100
+
+[node name="flight_particles" type="CPUParticles2D" parent="."]
+amount = 2
+lifetime = 0.1
+randomness = 0.22
+spread = 40.0
+initial_velocity = 100.0
+initial_velocity_random = 0.24
+angle = 180.0
+scale_amount = 3.0
+scale_amount_random = 1.0
+color = Color( 0.847059, 0.384314, 0.12549, 1 )
+hue_variation = 0.04
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "Idle"
+frame = 1
+speed_scale = 2.0
+playing = true
+
+[node name="lifetime" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="death_particles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 20
+lifetime = 0.2
+explosiveness = 0.66
+spread = 180.0
+initial_velocity = 20.0
+angle = 180.0
+color_ramp = SubResource( 2 )
+[connection signal="timeout" from="lifetime" to="." method="_on_lifetime_timeout"]

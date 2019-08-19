@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://gb_4col.shader" type="Shader" id=1]
+[ext_resource path="res://assets/shaders/grid_tile.png" type="Texture" id=2]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/color_1 = Plane( 0.78, 0.78, 0.26, 1 )
+shader_param/color_2 = Plane( 0.49, 0.52, 0.15, 1 )
+shader_param/color_3 = Plane( 0, 0.41, 0, 1 )
+shader_param/color_4 = Plane( 0.01, 0.2, 0, 1 )
+shader_param/offset = 0.3
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.994012, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+width = 166
+
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+
+uniform float brightness = 1.13;
+
+void fragment(){
+	vec4 pixel_color = texture(SCREEN_TEXTURE, SCREEN_UV, 0);
+	vec4 grid_pixel_color = textureLod(TEXTURE, UV, 0);
+	if(grid_pixel_color.r < 0.5){
+		COLOR = vec4(1, 1, 1, 0);
+	}else{
+		COLOR = pixel_color*brightness;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/brightness = 1.13
+
+[node name="GB_shaders" type="CanvasLayer"]
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+visible = false
+copy_mode = 2
+
+[node name="4_colderors_sha" type="TextureRect" parent="BackBufferCopy"]
+material = SubResource( 1 )
+margin_right = 160.0
+margin_bottom = 144.0
+texture = SubResource( 3 )
+expand = true
+
+[node name="BackBufferCopy2" type="BackBufferCopy" parent="."]
+visible = false
+copy_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="BackBufferCopy2"]
+material = SubResource( 5 )
+margin_left = -0.457535
+margin_right = 160.0
+margin_bottom = 144.0
+texture = ExtResource( 2 )
+stretch_mode = 2
