@@ -1,2 +1,4 @@
 builds
 .import
+*.import
+*-autosave.kra
