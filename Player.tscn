@@ -114,3 +114,5 @@ editor_draw_drag_margin = true
 [node name="projectile_spawn_position" type="Position2D" parent="."]
 position = Vector2( -0.0809975, -4.97178 )
 scale = Vector2( 0.22, 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]

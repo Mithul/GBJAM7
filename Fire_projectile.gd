@@ -26,6 +26,18 @@ func _process(delta):
 	translate((Vector2(1,0)*speed*delta).rotated(rotation))
 
 
-func _on_lifetime_timeout():
+func die():
 	$death_particles.emitting = true
 	queue_free()
+
+func _on_lifetime_timeout():
+	die()
+
+func _on_Area2D_area_entered(area):
+	var entity = area.get_parent()
+	var should_die = true
+	if entity.has_method("incur_damage"):
+		if entity.incur_damage(10) == false:
+			should_die = false
+	if should_die:
+		die()
