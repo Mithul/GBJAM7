@@ -22,6 +22,7 @@ script = ExtResource( 1 )
 speed = 100
 
 [node name="flight_particles" type="CPUParticles2D" parent="."]
+rotation = 3.14159
 amount = 2
 lifetime = 0.1
 randomness = 0.22
@@ -37,7 +38,7 @@ hue_variation = 0.04
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "Idle"
-frame = 1
+frame = 3
 speed_scale = 2.0
 playing = true
 
