@@ -4,11 +4,14 @@ extends KinematicBody2D
 # var a = 2
 # var b = "text"
 
-export var health = 100
+export var max_health = 100
+var health = 0
+signal on_death
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Healthbar.value = 20
+	health = max_health
+	$Healthbar.value = health*20/max_health
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -24,12 +27,13 @@ func _physics_process(delta):
 func die():
 	if $AnimatedSprite.animation != 'Death':
 		$AnimatedSprite.play("Death")
+		emit_signal("on_death")
 
 func incur_damage(damage):
 	if health < 0:
 		return false
 	health -= damage
-	$Healthbar.value = health/5
-	if health < 0:
+	$Healthbar.value = health*20/max_health
+	if health <= 0:
 		die()
 	

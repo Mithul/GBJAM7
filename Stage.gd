@@ -9,8 +9,10 @@ onready var tilemap = $Map/TileMap
 export var level = 1
 export var enemy : PackedScene
 
+var num_enemies = 0
+
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func init():
 	randomize()
 	var grass_tile_id = tilemap.tile_set.find_tile_by_name("grass")
 	
@@ -21,10 +23,22 @@ func _ready():
 				continue
 			if randf() < 0.1*level:
 				var new_enemy = enemy.instance()
+				new_enemy.max_health = level*100/2
+				new_enemy.connect("on_death", self, "_on_enemy_died")
 				new_enemy.global_position = cell_glob_pos + Vector2(8, 8)
 				add_child(new_enemy)
+				num_enemies += 1
+				
+func _ready():
+	init()
 		
 
+func _on_enemy_died():
+	num_enemies -= 1
+	print("enemy died")
+	if num_enemies == 0:
+		level += 1
+		init()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	print(tilemap.map_to_world(Vector2(0,1)))
