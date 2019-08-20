@@ -5,11 +5,11 @@
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
-shader_param/color_1 = Plane( 0.78, 0.78, 0.26, 1 )
-shader_param/color_2 = Plane( 0.49, 0.52, 0.15, 1 )
-shader_param/color_3 = Plane( 0, 0.41, 0, 1 )
-shader_param/color_4 = Plane( 0.01, 0.2, 0, 1 )
-shader_param/offset = 0.3
+shader_param/color_1 = Plane( 0.968627, 0.905882, 0.776471, 1 )
+shader_param/color_2 = Plane( 0.839216, 0.556863, 0.286275, 1 )
+shader_param/color_3 = Plane( 0.65098, 0.215686, 0.145098, 1 )
+shader_param/color_4 = Plane( 0.2, 0.117647, 0.313726, 1 )
+shader_param/offset = 0.5
 
 [sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0, 0.994012, 1 )
@@ -41,7 +41,6 @@ shader_param/brightness = 1.13
 [node name="GB_shaders" type="CanvasLayer"]
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
-visible = false
 copy_mode = 2
 
 [node name="4_colderors_sha" type="TextureRect" parent="BackBufferCopy"]
@@ -52,10 +51,10 @@ texture = SubResource( 3 )
 expand = true
 
 [node name="BackBufferCopy2" type="BackBufferCopy" parent="."]
-visible = false
 copy_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="BackBufferCopy2"]
+visible = false
 material = SubResource( 5 )
 margin_left = -0.457535
 margin_right = 160.0

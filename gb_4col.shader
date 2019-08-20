@@ -1,11 +1,11 @@
 shader_type canvas_item;
 
-uniform vec4 color_1 = vec4(0.78, 0.78, 0.26, 1);
-uniform vec4 color_2 = vec4(0.49, 0.52, 0.15, 1);
-uniform vec4 color_3 = vec4(0.0, 0.41, 0.0, 1);
-uniform vec4 color_4 = vec4(0.01, 0.20, 0.0, 1);
+uniform vec4 color_1 = vec4(0.9686274509803922, 0.9058823529411765, 0.7764705882352941, 1);
+uniform vec4 color_2 = vec4(0.8392156862745098, 0.5568627450980392, 0.28627450980392155, 1);
+uniform vec4 color_3 = vec4(0.6509803921568628, 0.21568627450980393, 0.1450980392156863, 1);
+uniform vec4 color_4 = vec4(0.2, 0.11764705882352941, 0.3137254901960784, 1);
 
-uniform float offset = 0.3;
+uniform float offset = 0.5;
 
 vec4 to_grayscale(vec4 pixcol){
 	float average = (pixcol.r + pixcol.g + pixcol.b)/3.0;
