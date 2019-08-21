@@ -27,11 +27,13 @@ func init():
 			if randf() < 0.01*level/2:
 				var new_enemy = enemy.instance()
 				new_enemy.max_health = level*100/4
-				new_enemy.score = level*20
+				new_enemy.points = level*20
 				new_enemy.connect("on_death", self, "_on_enemy_died")
 				new_enemy.global_position = cell_glob_pos + Vector2(8, 8)
 				add_child(new_enemy)
 				num_enemies += 1
+	if num_enemies == 0:
+		init()
 	emit_signal("remaining_enemies_update", num_enemies)
 	
 func reset():
