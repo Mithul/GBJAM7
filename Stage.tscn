@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=2]
+[gd_scene load_steps=79 format=2]
 
 [ext_resource path="res://Stage.gd" type="Script" id=1]
 [ext_resource path="res://Enemy.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://LevelGUI.gd" type="Script" id=5]
 [ext_resource path="res://assets/Fonts/GUILvlFont.tres" type="DynamicFont" id=6]
+[ext_resource path="res://GameOver.gd" type="Script" id=7]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 12, 16, 12, 12, 16, 12, 16, 16 )
@@ -640,6 +641,13 @@ points = PoolVector2Array( 0, 12, 4, 12, 4, 16, 0, 16 )
 } ]
 0/z_index = 0
 
+[sub_resource type="DynamicFontData" id=70]
+font_path = "res://assets/Fonts/ARCADECLASSIC.TTF"
+
+[sub_resource type="DynamicFont" id=71]
+size = 32
+font_data = SubResource( 70 )
+
 [node name="Stage" type="Node2D"]
 script = ExtResource( 1 )
 enemy = ExtResource( 2 )
@@ -682,7 +690,25 @@ margin_right = 159.0
 margin_bottom = 14.0
 custom_fonts/font = ExtResource( 6 )
 align = 2
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+pause_mode = 2
+script = ExtResource( 7 )
+
+[node name="GameOverText" type="Label" parent="GameOver"]
+margin_right = 160.0
+margin_bottom = 145.0
+custom_fonts/font = SubResource( 71 )
+text = "Game Over"
+align = 1
+valign = 1
+
+[node name="GameOverWait" type="Timer" parent="GameOver"]
+wait_time = 3.0
+one_shot = true
 [connection signal="level_complete" from="." to="GUI" method="_on_Stage_level_complete"]
 [connection signal="remaining_enemies_update" from="." to="GUI" method="_on_Stage_remaining_enemies_update"]
+[connection signal="player_dead" from="Player" to="GameOver" method="_on_Player_player_dead"]
 [connection signal="gui_done" from="GUI" to="." method="_on_GUI_gui_done"]
 [connection signal="timeout" from="GUI/Display_timer" to="GUI" method="_on_Display_timer_timeout"]
+[connection signal="timeout" from="GameOver/GameOverWait" to="GameOver" method="_on_GameOverWait_timeout"]

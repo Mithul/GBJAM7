@@ -32,6 +32,12 @@ func init():
 				add_child(new_enemy)
 				num_enemies += 1
 	emit_signal("remaining_enemies_update", num_enemies)
+	
+func reset():
+	level = 1
+	$Player.reset()
+	init()
+	
 func _ready():
 	init()
 		

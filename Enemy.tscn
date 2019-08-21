@@ -86,15 +86,14 @@ script = ExtResource( 1 )
 position = Vector2( -0.414629, -7.97007 )
 frames = SubResource( 1 )
 animation = "Idle"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="HitBox" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 position = Vector2( 0, -8.04842 )
 shape = SubResource( 3 )
 
@@ -107,3 +106,8 @@ rect_scale = Vector2( 0.1, 1 )
 max_value = 20.0
 texture_under = SubResource( 5 )
 texture_progress = SubResource( 7 )
+
+[node name="HitTimer" type="Timer" parent="."]
+[connection signal="area_entered" from="HitBox" to="." method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]
+[connection signal="timeout" from="HitTimer" to="." method="_on_HitTimer_timeout"]
