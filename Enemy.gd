@@ -12,6 +12,8 @@ var hit_entities : Array
 
 var type = constants.ENEMY
 
+export var points = 20
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	health = max_health
@@ -32,7 +34,7 @@ func _physics_process(delta):
 func die():
 	if $AnimatedSprite.animation != 'Death':
 		$AnimatedSprite.play("Death")
-		emit_signal("on_death")
+		emit_signal("on_death", self)
 
 func incur_damage(damage):
 	if health < 0:
