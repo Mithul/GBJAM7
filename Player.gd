@@ -10,10 +10,13 @@ export var fireball : PackedScene
 onready var animator = $Sprite/AnimationPlayer
 
 var facing_direction = constants.LEFT
+var health = 100
+var mana = 100
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$GUI/HP.value = health
+	$GUI/MP.value = mana
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
@@ -48,12 +51,20 @@ func _physics_process(delta):
 	move(delta)
 	
 	if Input.is_action_just_pressed("ui_select"):
-		print("Fireball")
-		var new_fireball = fireball.instance()
-		new_fireball.position = $projectile_spawn_position.position
-		add_child(new_fireball)
-		new_fireball.init(facing_direction)
-	
+		if mana >= 5:
+			print("Fireball")
+			var new_fireball = fireball.instance()
+			new_fireball.global_position = $projectile_spawn_position.global_position
+			get_node("/root/Main").add_child(new_fireball)
+			new_fireball.init(facing_direction)
+			update_mana(-5)
+			
+func update_mana(value):
+	mana += value
+	$GUI/MP.value = mana
 		
 func _on_Area2D_body_entered(body):
 	print(body)
+
+func _on_ManaRegen_timeout():
+	update_mana(5)

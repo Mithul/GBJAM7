@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://Fire_projectile.tscn" type="PackedScene" id=2]
@@ -81,6 +81,34 @@ tracks/0/keys = {
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 2.62508, 1.55315 )
 
+[sub_resource type="Gradient" id=9]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="Gradient" id=11]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=12]
+gradient = SubResource( 11 )
+
+[sub_resource type="Gradient" id=13]
+offsets = PoolRealArray( 1 )
+colors = PoolColorArray( 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=14]
+gradient = SubResource( 13 )
+
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
 fireball = ExtResource( 2 )
@@ -115,4 +143,30 @@ editor_draw_drag_margin = true
 position = Vector2( -0.0809975, -4.97178 )
 scale = Vector2( 0.22, 1 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="HP" type="TextureProgress" parent="GUI"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 2049.0
+margin_bottom = 2.0
+rect_scale = Vector2( 0.01, 1 )
+texture_under = SubResource( 10 )
+texture_progress = SubResource( 8 )
+
+[node name="MP" type="TextureProgress" parent="GUI"]
+margin_left = 1.0
+margin_top = 3.0
+margin_right = 2049.0
+margin_bottom = 4.0
+rect_scale = Vector2( 0.01, 1 )
+texture_under = SubResource( 12 )
+texture_progress = SubResource( 14 )
+
+[node name="Score" type="Label" parent="GUI"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="ManaRegen" type="Timer" parent="."]
+autostart = true
+[connection signal="timeout" from="ManaRegen" to="." method="_on_ManaRegen_timeout"]
