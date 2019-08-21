@@ -6,6 +6,8 @@ extends Node2D
 export var speed = 40
 # Called when the node enters the scene tree for the first time.
 
+var launched_entity_type = null
+
 func init(direction):
 	print("INIT", direction)
 	if direction == constants.UP:
@@ -22,7 +24,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
 	translate((Vector2(1,0)*speed*delta).rotated(rotation))
 
 
@@ -35,6 +36,8 @@ func _on_lifetime_timeout():
 
 func _on_Area2D_area_entered(area):
 	var entity = area.get_parent()
+	if entity.type == launched_entity_type:
+		return
 	var should_die = true
 	if entity.has_method("incur_damage"):
 		if entity.incur_damage(10) == false:

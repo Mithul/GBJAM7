@@ -4,16 +4,32 @@ extends KinematicBody2D
 # var a = 2
 # var b = "text"
 
+signal player_dead
+
 export var speed = 20
 export var fireball : PackedScene
 
 onready var animator = $Sprite/AnimationPlayer
 
 var facing_direction = constants.LEFT
+var health = 100
+var mana = 100
+var score = 0
+
+var type = constants.PLAYER
+
+func reset():
+	health = 100
+	mana = 100
+	score = 0
+	update_health(0)
+	update_mana(0)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$GUI/HP.value = health
+	$GUI/MP.value = mana
+	$GUI/Score.text = "Score : "+str(score)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
@@ -48,12 +64,36 @@ func _physics_process(delta):
 	move(delta)
 	
 	if Input.is_action_just_pressed("ui_select"):
-		print("Fireball")
-		var new_fireball = fireball.instance()
-		new_fireball.position = $projectile_spawn_position.position
-		add_child(new_fireball)
-		new_fireball.init(facing_direction)
+		if mana >= 5:
+			print("Fireball")
+			var new_fireball = fireball.instance()
+			new_fireball.launched_entity_type = type
+			new_fireball.global_position = $projectile_spawn_position.global_position
+			get_node("/root/Main").add_child(new_fireball)
+			new_fireball.init(facing_direction)
+			update_mana(-10)
+			
+func update_mana(value):
+	mana += value
+	$GUI/MP.value = mana
 	
+func update_score(value):
+	score += value
+	$GUI/Score.text = "Score : "+str(score)
+	
+func update_health(value):
+	health += value
+	$GUI/HP.value = health
+	if health <= 0:
+		emit_signal("player_dead")
+	
+func incur_damage(value):
+	print(health)
+	update_health(-value)
+	return false
 		
 func _on_Area2D_body_entered(body):
 	print(body)
+
+func _on_ManaRegen_timeout():
+	update_mana(5)
