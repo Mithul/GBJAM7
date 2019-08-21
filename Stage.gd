@@ -4,6 +4,9 @@ extends Node2D
 # var a = 2
 # var b = "text"
 
+signal level_complete
+signal remaining_enemies_update
+
 onready var tilemap = $Map/TileMap
 
 export var level = 1
@@ -21,24 +24,30 @@ func init():
 			var cell_glob_pos = tilemap.map_to_world(cell_pos)
 			if $Player.global_position.distance_to(cell_glob_pos) < 32:
 				continue
-			if randf() < 0.1*level:
+			if randf() < 0.01*level/2:
 				var new_enemy = enemy.instance()
-				new_enemy.max_health = level*100/2
+				new_enemy.max_health = level*100/4
 				new_enemy.connect("on_death", self, "_on_enemy_died")
 				new_enemy.global_position = cell_glob_pos + Vector2(8, 8)
 				add_child(new_enemy)
 				num_enemies += 1
-				
+	emit_signal("remaining_enemies_update", num_enemies)
 func _ready():
 	init()
 		
 
 func _on_enemy_died():
 	num_enemies -= 1
-	print("enemy died")
+	emit_signal("remaining_enemies_update", num_enemies)
+	print("ENEMY", num_enemies)
 	if num_enemies == 0:
 		level += 1
-		init()
+		emit_signal("level_complete")
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	print(tilemap.map_to_world(Vector2(0,1)))
+
+
+func _on_GUI_gui_done():
+	init()
