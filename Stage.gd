@@ -9,7 +9,7 @@ signal remaining_enemies_update
 
 onready var tilemap = $Map/TileMap
 
-export var level = 1
+export var level = 20
 export var enemy : PackedScene
 
 var num_enemies = 0
