@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=2]
+[gd_scene load_steps=82 format=2]
 
 [ext_resource path="res://Stage.gd" type="Script" id=1]
 [ext_resource path="res://Enemy.tscn" type="PackedScene" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://LevelGUI.gd" type="Script" id=5]
 [ext_resource path="res://assets/Fonts/GUILvlFont.tres" type="DynamicFont" id=6]
 [ext_resource path="res://GameOver.gd" type="Script" id=7]
+[ext_resource path="res://MusicHandler.gd" type="Script" id=8]
+[ext_resource path="res://assets/music/lmms_proj/bg.ogg" type="AudioStream" id=9]
+[ext_resource path="res://assets/music/lmms_proj/enemy_appeared.wav" type="AudioStream" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 12, 16, 12, 12, 16, 12, 16, 16 )
@@ -706,9 +709,28 @@ valign = 1
 [node name="GameOverWait" type="Timer" parent="GameOver"]
 wait_time = 3.0
 one_shot = true
+
+[node name="MusicHandler" type="Node" parent="."]
+script = ExtResource( 8 )
+
+[node name="Background" type="AudioStreamPlayer" parent="MusicHandler"]
+stream = ExtResource( 9 )
+volume_db = -10.097
+autoplay = true
+
+[node name="EnemySeen" type="AudioStreamPlayer" parent="MusicHandler"]
+stream = ExtResource( 10 )
+volume_db = -15.146
+
+[node name="beat" type="Timer" parent="MusicHandler"]
+wait_time = 1.6
+autostart = true
 [connection signal="level_complete" from="." to="GUI" method="_on_Stage_level_complete"]
 [connection signal="remaining_enemies_update" from="." to="GUI" method="_on_Stage_remaining_enemies_update"]
 [connection signal="player_dead" from="Player" to="GameOver" method="_on_Player_player_dead"]
 [connection signal="gui_done" from="GUI" to="." method="_on_GUI_gui_done"]
 [connection signal="timeout" from="GUI/Display_timer" to="GUI" method="_on_Display_timer_timeout"]
 [connection signal="timeout" from="GameOver/GameOverWait" to="GameOver" method="_on_GameOverWait_timeout"]
+[connection signal="finished" from="MusicHandler/Background" to="MusicHandler" method="_on_Background_finished"]
+[connection signal="finished" from="MusicHandler/EnemySeen" to="MusicHandler" method="_on_EnemySeen_finished"]
+[connection signal="timeout" from="MusicHandler/beat" to="MusicHandler" method="_on_beat_timeout"]

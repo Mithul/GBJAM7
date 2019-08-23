@@ -7,3 +7,4 @@ var RIGHT = 3
 
 var PLAYER = 100
 var ENEMY = 101
+var PROJECTILE = 102

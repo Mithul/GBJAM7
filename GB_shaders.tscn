@@ -54,7 +54,6 @@ expand = true
 copy_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="BackBufferCopy2"]
-visible = false
 material = SubResource( 5 )
 margin_left = -0.457535
 margin_right = 160.0

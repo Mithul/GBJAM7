@@ -13,12 +13,14 @@ export var level = 1
 export var enemy : PackedScene
 
 var num_enemies = 0
+var enemies = []
 
 # Called when the node enters the scene tree for the first time.
 func init():
 	randomize()
 	var grass_tile_id = tilemap.tile_set.find_tile_by_name("grass")
-	
+	enemies = []
+	num_enemies = 0
 	for cell_pos in tilemap.get_used_cells():
 		if tilemap.get_cell(cell_pos.x, cell_pos.y) == grass_tile_id:
 			var cell_glob_pos = tilemap.map_to_world(cell_pos)
@@ -29,7 +31,9 @@ func init():
 				new_enemy.max_health = level*100/4
 				new_enemy.points = level*20
 				new_enemy.connect("on_death", self, "_on_enemy_died")
+				new_enemy.connect("visible_on_camera", $MusicHandler, "enemy_visible")
 				new_enemy.global_position = cell_glob_pos + Vector2(8, 8)
+				enemies.append(new_enemy)
 				add_child(new_enemy)
 				num_enemies += 1
 	if num_enemies == 0:
@@ -38,6 +42,8 @@ func init():
 	
 func reset():
 	level = 1
+	for enemy in enemies:
+		enemy.queue_free()
 	$Player.reset()
 	init()
 	
@@ -61,3 +67,4 @@ func _on_enemy_died(enemy):
 
 func _on_GUI_gui_done():
 	init()
+

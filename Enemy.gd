@@ -7,6 +7,7 @@ extends KinematicBody2D
 export var max_health = 100
 var health = 0
 signal on_death
+signal visible_on_camera
 
 var hit_entities : Array
 
@@ -34,6 +35,7 @@ func _physics_process(delta):
 func die():
 	if $AnimatedSprite.animation != 'Death':
 		$AnimatedSprite.play("Death")
+		$death_sound.play()
 		emit_signal("on_death", self)
 
 func incur_damage(damage):
@@ -70,3 +72,7 @@ func _on_HitBox_area_exited(area):
 		hit_entities.remove(pos)
 	if hit_entities.size() == 0:
 		$HitTimer.stop()
+
+
+func _on_VisibilityNotifier2D_viewport_entered(viewport):
+	emit_signal("visible_on_camera")
