@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://Fire_projectile.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/character/bald_wizard.png" type="Texture" id=3]
+[ext_resource path="res://assets/character/player/frames/out.png" type="Texture" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Idle"
@@ -81,19 +81,19 @@ tracks/0/keys = {
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 2.62508, 1.55315 )
 
-[sub_resource type="Gradient" id=9]
+[sub_resource type="Gradient" id=7]
 offsets = PoolRealArray( 0 )
 colors = PoolColorArray( 0, 0, 0, 1 )
 
-[sub_resource type="GradientTexture" id=10]
-gradient = SubResource( 9 )
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
 
-[sub_resource type="Gradient" id=7]
+[sub_resource type="Gradient" id=9]
 offsets = PoolRealArray( 0 )
 colors = PoolColorArray( 1, 1, 1, 1 )
 
-[sub_resource type="GradientTexture" id=8]
-gradient = SubResource( 7 )
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
 
 [sub_resource type="Gradient" id=11]
 offsets = PoolRealArray( 0 )
@@ -109,14 +109,14 @@ colors = PoolColorArray( 1, 1, 1, 1 )
 [sub_resource type="GradientTexture" id=14]
 gradient = SubResource( 13 )
 
-[sub_resource type="DynamicFontData" id=16]
+[sub_resource type="DynamicFontData" id=15]
 font_path = "res://assets/Fonts/ARCADECLASSIC.TTF"
 
-[sub_resource type="DynamicFont" id=17]
+[sub_resource type="DynamicFont" id=16]
 size = 6
-font_data = SubResource( 16 )
+font_data = SubResource( 15 )
 
-[sub_resource type="CapsuleShape2D" id=15]
+[sub_resource type="CapsuleShape2D" id=17]
 radius = 4.32526
 height = 9.49843
 
@@ -131,7 +131,7 @@ texture = ExtResource( 3 )
 centered = false
 vframes = 21
 hframes = 13
-frame = 109
+frame = 112
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 autoplay = "Idle"
@@ -162,8 +162,8 @@ margin_top = 1.0
 margin_right = 2049.0
 margin_bottom = 2.0
 rect_scale = Vector2( 0.01, 1 )
-texture_under = SubResource( 10 )
-texture_progress = SubResource( 8 )
+texture_under = SubResource( 8 )
+texture_progress = SubResource( 10 )
 
 [node name="MP" type="TextureProgress" parent="GUI"]
 margin_left = 1.0
@@ -179,7 +179,7 @@ margin_left = 1.0
 margin_top = 6.0
 margin_right = 41.0
 margin_bottom = 13.0
-custom_fonts/font = SubResource( 17 )
+custom_fonts/font = SubResource( 16 )
 
 [node name="ManaRegen" type="Timer" parent="."]
 autostart = true
@@ -188,5 +188,5 @@ autostart = true
 
 [node name="Body" type="CollisionShape2D" parent="HurtBox"]
 position = Vector2( 7.62939e-06, -7.35857 )
-shape = SubResource( 15 )
+shape = SubResource( 17 )
 [connection signal="timeout" from="ManaRegen" to="." method="_on_ManaRegen_timeout"]

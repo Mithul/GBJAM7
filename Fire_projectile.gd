@@ -7,6 +7,7 @@ export var speed = 40
 # Called when the node enters the scene tree for the first time.
 
 var launched_entity_type = null
+var type = constants.PROJECTILE
 
 func init(direction):
 	print("INIT", direction)
