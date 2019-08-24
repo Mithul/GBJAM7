@@ -4,6 +4,7 @@ extends KinematicBody2D
 # var a = 2
 # var b = "text"
 
+export var speed = 10
 export var max_health = 100
 var health = 0
 signal on_death
@@ -15,14 +16,31 @@ var type = constants.ENEMY
 
 export var points = 20
 
+var follows = null
+
+var is_follows_seen = false
+
+var follows_when_not_visible = true
+var follows_around_obstacles = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	health = max_health
 	hit_entities = []
 	$Healthbar.value = health*20/max_health
+	is_follows_seen = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	var movement = Vector2()
+	if follows != null:
+		movement = (follows.global_position - global_position).normalized()
+	
+	if abs(movement.x) > abs(movement.y):
+		move_and_slide(Vector2(movement.x, 0).normalized()*speed)
+	else:
+		move_and_slide(Vector2(0, movement.y).normalized()*speed)
+	
 	if randf() < 0.01:
 		if $AnimatedSprite.animation != 'Death':
 			$AnimatedSprite.play("Blink")
@@ -32,8 +50,12 @@ func _physics_process(delta):
 		elif $AnimatedSprite.animation == 'Death' and $AnimatedSprite.frames.get_frame_count("Death") == $AnimatedSprite.frame + 1:
 			queue_free()
 
+func follow(entity):
+	follows = entity
+
 func die():
 	if $AnimatedSprite.animation != 'Death':
+		speed = 0
 		$AnimatedSprite.play("Death")
 		$death_sound.play()
 		emit_signal("on_death", self)

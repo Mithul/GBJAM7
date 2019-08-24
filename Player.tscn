@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://Fire_projectile.tscn" type="PackedScene" id=2]
@@ -116,7 +116,14 @@ font_path = "res://assets/Fonts/ARCADECLASSIC.TTF"
 size = 6
 font_data = SubResource( 15 )
 
-[sub_resource type="CapsuleShape2D" id=17]
+[sub_resource type="DynamicFontData" id=17]
+font_path = "res://assets/Fonts/ARCADECLASSIC.TTF"
+
+[sub_resource type="DynamicFont" id=18]
+size = 8
+font_data = SubResource( 17 )
+
+[sub_resource type="CapsuleShape2D" id=19]
 radius = 4.32526
 height = 9.49843
 
@@ -181,6 +188,15 @@ margin_right = 41.0
 margin_bottom = 13.0
 custom_fonts/font = SubResource( 16 )
 
+[node name="Message" type="Label" parent="GUI"]
+margin_right = 161.0
+margin_bottom = 143.0
+custom_fonts/font = SubResource( 18 )
+align = 1
+valign = 1
+
+[node name="Timer" type="Timer" parent="GUI/Message"]
+
 [node name="ManaRegen" type="Timer" parent="."]
 autostart = true
 
@@ -188,5 +204,6 @@ autostart = true
 
 [node name="Body" type="CollisionShape2D" parent="HurtBox"]
 position = Vector2( 7.62939e-06, -7.35857 )
-shape = SubResource( 17 )
+shape = SubResource( 19 )
+[connection signal="timeout" from="GUI/Message/Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="ManaRegen" to="." method="_on_ManaRegen_timeout"]

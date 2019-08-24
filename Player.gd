@@ -30,7 +30,7 @@ func _ready():
 	$GUI/HP.value = health
 	$GUI/MP.value = mana
 	$GUI/Score.text = "Score : "+str(score)
-
+	$GUI/Message.visible = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 func move(delta):
@@ -72,6 +72,10 @@ func _physics_process(delta):
 			get_node("/root/Main").add_child(new_fireball)
 			new_fireball.init(facing_direction)
 			update_mana(-10)
+		else:
+			$GUI/Message.visible = true
+			$GUI/Message.text = "Not enough mana. \nRecharging"
+			$GUI/Message/Timer.start()
 			
 func update_mana(value):
 	mana += value
@@ -97,3 +101,7 @@ func _on_Area2D_body_entered(body):
 
 func _on_ManaRegen_timeout():
 	update_mana(5)
+
+
+func _on_Timer_timeout():
+	$GUI/Message.visible = false
