@@ -7,7 +7,8 @@ extends Node2D
 signal level_complete
 signal remaining_enemies_update
 
-onready var tilemap = $Map/TileMap
+onready var tilemap = $Map/Navigation2D/TileMap
+onready var nav2d := $Map/Navigation2D
 
 export var level = 1
 export var enemy : PackedScene
@@ -36,6 +37,13 @@ func init():
 				new_enemy.global_position = cell_glob_pos + Vector2(8, 8)
 				new_enemy.follow(player)
 				enemies.append(new_enemy)
+		
+				if level > 4:
+					new_enemy.follows_around_obstacles = true		
+				new_enemy.nav2d = nav2d
+				
+				new_enemy.impatience_wait_time = max(30 - randf()*level*10, randf())
+				
 				add_child(new_enemy)
 				num_enemies += 1
 	if num_enemies == 0:
@@ -60,7 +68,6 @@ func _on_enemy_died(enemy):
 	num_enemies -= 1
 	emit_signal("remaining_enemies_update", num_enemies)
 	$Player.update_score(enemy.points)
-	print("ENEMY", num_enemies)
 	if num_enemies == 0:
 		level += 1
 		emit_signal("level_complete")

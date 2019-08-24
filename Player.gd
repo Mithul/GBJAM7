@@ -57,15 +57,12 @@ func move(delta):
 	movement = move_and_slide(movement*speed, Vector2(0, -1))	
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
-		if collision:
-			print(collision)
 	
 func _physics_process(delta):
 	move(delta)
 	
 	if Input.is_action_just_pressed("ui_select"):
 		if mana >= 5:
-			print("Fireball")
 			var new_fireball = fireball.instance()
 			new_fireball.launched_entity_type = type
 			new_fireball.global_position = $projectile_spawn_position.global_position
@@ -92,12 +89,11 @@ func update_health(value):
 		emit_signal("player_dead")
 	
 func incur_damage(value):
-	print(health)
 	update_health(-value)
 	return false
 		
 func _on_Area2D_body_entered(body):
-	print(body)
+	pass
 
 func _on_ManaRegen_timeout():
 	update_mana(5)

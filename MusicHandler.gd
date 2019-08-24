@@ -18,11 +18,11 @@ func enemy_visible():
 		play_enemy_seen = true
 
 func _on_Background_finished():
-	print("Complete")
+	pass
 
 
 func _on_EnemySeen_finished():
-	print("Completee")
+	pass
 
 
 func _on_beat_timeout():

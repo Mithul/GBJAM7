@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://Enemy.gd" type="Script" id=1]
 [ext_resource path="res://assets/character/enemy/frame0000.png" type="Texture" id=2]
@@ -39,6 +39,24 @@
 [ext_resource path="res://assets/character/enemy/burn0029.png" type="Texture" id=37]
 [ext_resource path="res://assets/character/enemy/burn0030.png" type="Texture" id=38]
 [ext_resource path="res://assets/music/lmms_proj/death.wav" type="AudioStream" id=39]
+
+[sub_resource type="Animation" id=8]
+resource_name = "Grow"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.001, 0.2, 0.4, 0.6, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 0.129408, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ), Vector2( 0.9, 0.9 ), Vector2( 1.5, 1.5 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "Idle"
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -83,11 +101,15 @@ width = 100
 [node name="Enemy" type="KinematicBody2D"]
 script = ExtResource( 1 )
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Idle"
+anims/Grow = SubResource( 8 )
+anims/Idle = SubResource( 9 )
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -0.414629, -7.97007 )
 frames = SubResource( 1 )
 animation = "Idle"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -119,7 +141,23 @@ scale = Vector2( 0.542177, 0.588344 )
 [node name="death_sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 39 )
 volume_db = -16.156
+
+[node name="PathFinder" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Line2D" type="Line2D" parent="."]
+visible = false
+points = PoolVector2Array( 0, 0, 11, 11 )
+width = 4.0
+texture_mode = 44
+
+[node name="Impatience" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
 [connection signal="area_entered" from="HitBox" to="." method="_on_Area2D_area_entered"]
 [connection signal="area_exited" from="HitBox" to="." method="_on_HitBox_area_exited"]
 [connection signal="timeout" from="HitTimer" to="." method="_on_HitTimer_timeout"]
 [connection signal="viewport_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_viewport_entered"]
+[connection signal="timeout" from="PathFinder" to="." method="_on_PathFinder_timeout"]
+[connection signal="timeout" from="Impatience" to="." method="_on_Impatience_timeout"]

@@ -10,7 +10,6 @@ var launched_entity_type = null
 var type = constants.PROJECTILE
 
 func init(direction):
-	print("INIT", direction)
 	if direction == constants.UP:
 		set_rotation(deg2rad(-90))
 	elif direction == constants.DOWN:
